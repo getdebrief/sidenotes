@@ -44,12 +44,14 @@ function placeSidenotes(state, actionType) {
     const sorted = Object.entries(state.sidenotes).map(([id, cmt]) => {
         var _a, _b, _c;
         const anchor = (_b = state.anchors[(_a = cmt.inlineAnchors) === null || _a === void 0 ? void 0 : _a[0]]) !== null && _b !== void 0 ? _b : state.anchors[(_c = cmt.baseAnchors) === null || _c === void 0 ? void 0 : _c[0]];
-        const loc = [id, Object.assign(Object.assign({}, getTopLeft(anchor)), { height: getHeight(id), boundaryElementTop })];
+        const loc = [id, Object.assign(Object.assign({}, getTopLeft(anchor)), { height: getHeight(id), boundaryElementTop, order: cmt.order })];
         if (id === state.selectedSidenote) {
             findMe = loc;
         }
         return loc;
     }).sort((a, b) => {
+        if (a[1].order && b[1].order)
+            return a[1].order < b[1].order ? -1 : 1;
         if (a[1].top === b[1].top)
             return a[1].left - b[1].left;
         return a[1].top - b[1].top;

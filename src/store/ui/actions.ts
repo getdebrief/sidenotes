@@ -8,14 +8,14 @@ import {
 import { AppThunk, SidenotesUIActions } from '../types';
 
 export function connectSidenote(
-  docId?: string, sidenoteId?: string, baseId?: string, el?: HTMLDivElement,
+  docId?: string, sidenoteId?: string, baseId?: string, el?: HTMLDivElement, order?: number,
 ): AppThunk<void> {
   return (dispatch) => {
     if (docId == null || sidenoteId == null) return;
     dispatch({
       type: UI_CONNECT_SIDENOTE,
       payload: {
-        docId, sidenoteId, baseId, el,
+        docId, sidenoteId, baseId, el, order,
       },
     } as SidenotesUIActions);
   };

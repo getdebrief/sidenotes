@@ -29,7 +29,8 @@ function getTopLeft(anchor?: Anchor) {
 }
 
 function placeSidenotes(state: DocState, actionType: string): DocState {
-  type Loc = [string, { top: number; left: number; height: number, boundaryElementTop?: number }];
+  // eslint-disable-next-line max-len
+  type Loc = [string, { top: number; left: number; height: number, boundaryElementTop?: number, order?: number }];
   let findMe: Loc | undefined;
 
   let boundaryElementTop: number;
@@ -50,11 +51,14 @@ function placeSidenotes(state: DocState, actionType: string): DocState {
   const sorted = Object.entries(state.sidenotes).map(
     ([id, cmt]) => {
       const anchor = state.anchors[cmt.inlineAnchors?.[0]] ?? state.anchors[cmt.baseAnchors?.[0]];
-      const loc: Loc = [id, { ...getTopLeft(anchor), height: getHeight(id), boundaryElementTop }];
+      const loc: Loc = [id, {
+        ...getTopLeft(anchor), height: getHeight(id), boundaryElementTop, order: cmt.order,
+      }];
       if (id === state.selectedSidenote) { findMe = loc; }
       return loc;
     },
   ).sort((a, b) => {
+    if (a[1].order && b[1].order) return a[1].order < b[1].order ? -1 : 1;
     if (a[1].top === b[1].top) return a[1].left - b[1].left;
     return a[1].top - b[1].top;
   });

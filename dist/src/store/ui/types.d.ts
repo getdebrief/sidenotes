@@ -17,6 +17,7 @@ export declare type Sidenote = {
     top: number;
     visible: boolean;
     element?: HTMLDivElement;
+    order?: number;
 };
 export declare type Anchor = {
     id: string;
@@ -40,6 +41,7 @@ export interface ConnectSidenoteAction {
         sidenoteId: string;
         baseId?: string;
         el?: HTMLDivElement;
+        order?: number;
     };
 }
 export interface DisconnectAnchorAction {

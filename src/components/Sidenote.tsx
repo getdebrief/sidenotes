@@ -13,10 +13,11 @@ type Props = {
   base?: string;
   sidenote: string;
   children: React.ReactNode;
+  order?: number;
 };
 
 export const Sidenote = (props: Props) => {
-  const { base, sidenote, children } = props;
+  const { base, sidenote, children, order } = props;
   const dispatch = useDispatch<Dispatch>();
   const [doc, setDoc] = useState<string>();
 
@@ -31,7 +32,7 @@ export const Sidenote = (props: Props) => {
     const parentDoc = getDoc(el);
     if (parentDoc) {
       setDoc(parentDoc);
-      dispatch(connectSidenote(parentDoc, sidenote, base, el));
+      dispatch(connectSidenote(parentDoc, sidenote, base, el, order));
     }
   }, []);
 
@@ -54,6 +55,7 @@ export const Sidenote = (props: Props) => {
 
 Sidenote.defaultProps = {
   base: undefined,
+  order: undefined,
 };
 
 export default Sidenote;

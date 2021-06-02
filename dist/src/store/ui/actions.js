@@ -3,14 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.repositionSidenotes = exports.deselectSidenote = exports.resetAllSidenotes = exports.disconnectAnchor = exports.disconnectSidenote = exports.selectAnchor = exports.selectSidenote = exports.updateSidenote = exports.connectAnchorBase = exports.connectAnchor = exports.connectSidenote = void 0;
 const uuid_1 = require("uuid");
 const types_1 = require("./types");
-function connectSidenote(docId, sidenoteId, baseId, el) {
+function connectSidenote(docId, sidenoteId, baseId, el, order) {
     return (dispatch) => {
         if (docId == null || sidenoteId == null)
             return;
         dispatch({
             type: types_1.UI_CONNECT_SIDENOTE,
             payload: {
-                docId, sidenoteId, baseId, el,
+                docId, sidenoteId, baseId, el, order,
             },
         });
     };

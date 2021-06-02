@@ -20,6 +20,7 @@ export type Sidenote = {
   top: number;
   visible: boolean;
   element?: HTMLDivElement;
+  order?: number;
 };
 
 export type Anchor = {
@@ -47,6 +48,7 @@ export interface ConnectSidenoteAction {
     sidenoteId: string;
     baseId?: string;
     el?: HTMLDivElement;
+    order?: number;
   };
 }
 

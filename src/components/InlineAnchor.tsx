@@ -12,7 +12,7 @@ import { getDoc } from './utils';
 type Props = {
   sidenote: string;
   className?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export const InlineAnchor = (props: Props) => {
@@ -51,6 +51,7 @@ export const InlineAnchor = (props: Props) => {
 
 InlineAnchor.defaultProps = {
   className: undefined,
+  children: <></>,
 };
 
 export default InlineAnchor;

@@ -57,6 +57,7 @@ exports.InlineAnchor = (props) => {
 };
 exports.InlineAnchor.defaultProps = {
     className: undefined,
+    children: react_1.default.createElement(react_1.default.Fragment, null),
 };
 exports.default = exports.InlineAnchor;
 //# sourceMappingURL=InlineAnchor.js.map

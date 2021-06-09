@@ -23,9 +23,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.InlineAnchor = void 0;
+const classnames_1 = __importDefault(require("classnames"));
 const react_1 = __importStar(require("react"));
 const react_redux_1 = require("react-redux");
-const classnames_1 = __importDefault(require("classnames"));
 const actions_1 = require("../store/ui/actions");
 const selectors_1 = require("../store/ui/selectors");
 const utils_1 = require("./utils");
@@ -53,11 +53,16 @@ exports.InlineAnchor = (props) => {
         }
     }, []);
     const classes = classnames_1.default('anchor', { selected, [className !== null && className !== void 0 ? className : '']: Boolean(className) });
-    return (react_1.default.createElement("span", { className: classes, onClick: onClick, ref: onRef }, children));
+    const styles = {
+        height: children ? 'auto' : 0,
+        display: 'inline-block',
+        verticalAlign: children ? 'baseline' : 'text-top',
+    };
+    return (react_1.default.createElement("span", { className: classes, onClick: onClick, ref: onRef, style: styles }, children));
 };
 exports.InlineAnchor.defaultProps = {
     className: undefined,
-    children: react_1.default.createElement(react_1.default.Fragment, null),
+    children: null,
 };
 exports.default = exports.InlineAnchor;
 //# sourceMappingURL=InlineAnchor.js.map

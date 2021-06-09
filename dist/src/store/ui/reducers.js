@@ -14,6 +14,15 @@ function getHeight(id) {
     var _a, _b;
     return (_b = (_a = document.getElementById(id)) === null || _a === void 0 ? void 0 : _a.offsetHeight) !== null && _b !== void 0 ? _b : 0;
 }
+function getAnchorHeight(anchor) {
+    const el = anchor === null || anchor === void 0 ? void 0 : anchor.element;
+    let height = el === null || el === void 0 ? void 0 : el.offsetHeight;
+    if (!height) {
+        const parent = el === null || el === void 0 ? void 0 : el.parentNode;
+        height = parent === null || parent === void 0 ? void 0 : parent.offsetHeight;
+    }
+    return height || 0;
+}
 function getTopLeft(anchor) {
     var _a;
     let el = anchor === null || anchor === void 0 ? void 0 : anchor.element;
@@ -44,7 +53,15 @@ function placeSidenotes(state, actionType) {
     const sorted = Object.entries(state.sidenotes).map(([id, cmt]) => {
         var _a, _b, _c;
         const anchor = (_b = state.anchors[(_a = cmt.inlineAnchors) === null || _a === void 0 ? void 0 : _a[0]]) !== null && _b !== void 0 ? _b : state.anchors[(_c = cmt.baseAnchors) === null || _c === void 0 ? void 0 : _c[0]];
-        const loc = [id, Object.assign(Object.assign({}, getTopLeft(anchor)), { height: getHeight(id), boundaryElementTop, order: cmt.order })];
+        const { top, left } = getTopLeft(anchor);
+        const height = getHeight(id);
+        const loc = [id, {
+                top: id === state.selectedSidenote ? top - height / 2 + getAnchorHeight(anchor) / 2 : top,
+                left,
+                height,
+                boundaryElementTop,
+                order: cmt.order,
+            }];
         if (id === state.selectedSidenote) {
             findMe = loc;
         }

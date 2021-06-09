@@ -1,11 +1,13 @@
 import { opts } from '../../connect';
 import docReducer from './docReducer';
 import {
-  UIState, UIActionTypes,
-  UI_CONNECT_SIDENOTE, UI_SELECT_SIDENOTE,
-  UI_CONNECT_ANCHOR, UI_SELECT_ANCHOR, DocState, Anchor,
-  UI_DISCONNECT_ANCHOR, UI_DESELECT_SIDENOTE, UI_CONNECT_ANCHOR_BASE,
-  UI_REPOSITION_SIDENOTES, UI_RESET_ALL_SIDENOTES,
+  Anchor, DocState, UIActionTypes, UIState,
+
+  UI_CONNECT_ANCHOR,
+  UI_CONNECT_ANCHOR_BASE, UI_CONNECT_SIDENOTE,
+
+  UI_DESELECT_SIDENOTE, UI_DISCONNECT_ANCHOR,
+  UI_REPOSITION_SIDENOTES, UI_RESET_ALL_SIDENOTES, UI_SELECT_ANCHOR, UI_SELECT_SIDENOTE,
 } from './types';
 
 export const initialState: UIState = {
@@ -15,6 +17,17 @@ export const initialState: UIState = {
 function getHeight(id: string) {
   return document.getElementById(id)?.offsetHeight ?? 0;
 }
+
+function getAnchorHeight(anchor?: Anchor) {
+  const el = anchor?.element as HTMLElement | null;
+  let height = el?.offsetHeight;
+  if (!height) {
+    const parent = el?.parentNode as HTMLElement | null;
+    height = parent?.offsetHeight;
+  }
+  return height || 0;
+}
+
 function getTopLeft(anchor?: Anchor) {
   // Recurse up the tree until you find the article (nested relative offsets)
   let el = anchor?.element as HTMLElement | null;
@@ -51,8 +64,14 @@ function placeSidenotes(state: DocState, actionType: string): DocState {
   const sorted = Object.entries(state.sidenotes).map(
     ([id, cmt]) => {
       const anchor = state.anchors[cmt.inlineAnchors?.[0]] ?? state.anchors[cmt.baseAnchors?.[0]];
+      const { top, left } = getTopLeft(anchor);
+      const height = getHeight(id);
       const loc: Loc = [id, {
-        ...getTopLeft(anchor), height: getHeight(id), boundaryElementTop, order: cmt.order,
+        top: id === state.selectedSidenote ? top - height / 2 + getAnchorHeight(anchor) / 2 : top,
+        left,
+        height,
+        boundaryElementTop,
+        order: cmt.order,
       }];
       if (id === state.selectedSidenote) { findMe = loc; }
       return loc;

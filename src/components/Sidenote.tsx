@@ -17,16 +17,20 @@ type Props = {
 };
 
 export const Sidenote = (props: Props) => {
-  const { base, sidenote, children, order } = props;
+  const {
+    base, sidenote, children, order,
+  } = props;
   const dispatch = useDispatch<Dispatch>();
   const [doc, setDoc] = useState<string>();
 
   const selected = useSelector((state: State) => isSidenoteSelected(state, doc, sidenote));
-  let top = useSelector((state: State) => sidenoteTop(state, doc, sidenote));
+  const top = useSelector((state: State) => sidenoteTop(state, doc, sidenote));
   const onClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
     if (selected) return;
-    dispatch(selectSidenote(doc, sidenote));
+    setTimeout(() => {
+      dispatch(selectSidenote(doc, sidenote));
+    }, 0);
   }, [doc, selected]);
   const onRef = useCallback((el: HTMLDivElement) => {
     const parentDoc = getDoc(el);
@@ -35,10 +39,6 @@ export const Sidenote = (props: Props) => {
       dispatch(connectSidenote(parentDoc, sidenote, base, el, order));
     }
   }, []);
-
-  if (opts.preserveBoundaries && selected) {
-    top += opts.padding;
-  }
 
   return (
     <div

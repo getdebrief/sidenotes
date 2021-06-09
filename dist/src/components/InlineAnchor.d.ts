@@ -8,7 +8,7 @@ export declare const InlineAnchor: {
     (props: Props): JSX.Element;
     defaultProps: {
         className: undefined;
-        children: JSX.Element;
+        children: null;
     };
 };
 export default InlineAnchor;

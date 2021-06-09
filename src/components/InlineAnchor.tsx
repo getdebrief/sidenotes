@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
+import classNames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
+import { Dispatch, State } from '../store';
 import {
   connectAnchor, disconnectAnchor, selectAnchor,
 } from '../store/ui/actions';
 import { isSidenoteSelected } from '../store/ui/selectors';
-import { Dispatch, State } from '../store';
 import { getDoc } from './utils';
 
 type Props = {
@@ -24,7 +24,7 @@ export const InlineAnchor = (props: Props) => {
   const [ref, setRef] = useState<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (ref == null || doc == null) return () => {};
+    if (ref == null || doc == null) return () => { };
     return () => dispatch(disconnectAnchor(doc, ref));
   }, [doc, ref]);
 
@@ -42,8 +42,13 @@ export const InlineAnchor = (props: Props) => {
     }
   }, []);
   const classes = classNames('anchor', { selected, [className ?? '']: Boolean(className) });
+  const styles = {
+    height: children ? 'auto' : 0,
+    display: 'inline-block',
+    verticalAlign: children ? 'baseline' : 'text-top',
+  };
   return (
-    <span className={classes} onClick={onClick} ref={onRef}>
+    <span className={classes} onClick={onClick} ref={onRef} style={styles}>
       {children}
     </span>
   );
@@ -51,7 +56,7 @@ export const InlineAnchor = (props: Props) => {
 
 InlineAnchor.defaultProps = {
   className: undefined,
-  children: <></>,
+  children: null,
 };
 
 export default InlineAnchor;
